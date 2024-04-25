@@ -57,6 +57,7 @@ scene.add(sunLight);
 const canvas = document.querySelector("canvas.webgl")
 const renderer = new THREE.WebGLRenderer({
   canvas: canvas,
+  antialias: true
 })
 renderer.setSize(sizes.width, sizes.height)
 
@@ -64,19 +65,26 @@ renderer.setSize(sizes.width, sizes.height)
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
 
-const tick = () => {
-  requestAnimationFrame(tick)
+const animate = () => {
+  requestAnimationFrame(animate)
 
   earth.rotation.y += 0.01
   moon.rotation.y += 0.005
   renderer.render(scene, camera)
 }
 
-tick()
+animate()
 
-function handleWindowResize () {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-}
-window.addEventListener('resize', handleWindowResize, false);
+
+window.addEventListener('resize', () => {
+  // Update sizes
+  sizes.width = window.innerWidth
+  sizes.height = window.innerHeight
+
+  // Update camera
+  camera.aspect = sizes.width / sizes.height
+  camera.updateProjectionMatrix()
+
+  // Update renderer
+  renderer.setSize(sizes.width, sizes.height)
+});
